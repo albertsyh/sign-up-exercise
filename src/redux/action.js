@@ -24,16 +24,18 @@ export const userSignInFailure = (error) => {
 export const userLogin = (values) => {
   return (dispatch) => {
     dispatch(userSigningIn());
-    api
+    return api
       .post(`/login`, values)
       .then((res) => {
         console.log("values: ", values);
         const token = res.data.data.session;
         dispatch(userSignInSuccess(token));
+        return true
       })
       .catch((err) => {
         const errorMessage = err.response.data.error;
         dispatch(userSignInFailure(errorMessage));
+        return false
       });
   };
 };

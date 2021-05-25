@@ -13,6 +13,7 @@ import { userLogin } from "../redux/action";
 const Login = () => {
   const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{7,}$/;
   const dispatch = useDispatch();
+  const history = useHistory()
   const errMessage = useSelector((state) => state.auth.error);
   const loading = useSelector((state) => state.auth.loading);
 
@@ -34,7 +35,11 @@ const Login = () => {
         }}
         validationSchema={validate}
         onSubmit={(values) => {
-          dispatch(userLogin(values));
+          dispatch(userLogin(values)).then(response => {
+            if (response) {
+              history.push('/')
+            }
+          })
         }}
       >
         {(formik) => (
